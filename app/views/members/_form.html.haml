@@ -1,0 +1,24 @@
+.authform
+  = simple_form_for([@family,@member], html: { class: 'uk-form' }, wrapper: :uikit_form) do |f|
+    - if @member.errors.any?
+      #error_explanation
+        %h2
+          = pluralize(@member.errors.count, "error")
+          prohibited this household from being saved:
+        %ul
+          - @member.errors.full_messages.each do |message|
+            %li= message
+    = f.input :first_name
+    = f.input :last_name
+    = f.input :username, placeholder: 'Enter a username unique to your family, usually the first name'
+    = f.input :birth_date, as: :datepicker
+    = f.input :email, placeholder: 'Email Optional!'
+    = f.input :password, placeholder: 'For younger kids, choose a simple word or 4 digit pin number as a password'
+    = f.input :password_confirmation
+    = f.input :avatar, as: :file
+    - if current_user.member.parent?
+      .row
+        .col-xs-6.col-xs-offset-3= f.input :parent
+    .row
+      .col-xs-6.col-xs-offset-3
+        = f.button :submit,  :class => 'btn btn-primary '

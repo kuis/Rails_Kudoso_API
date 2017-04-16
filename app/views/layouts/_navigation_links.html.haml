@@ -1,0 +1,23 @@
+%ul.uk-subnav.uk-subnav-pill.uk-hidden-small
+  %li{ class: "#{ action_name == 'index' ? 'uk-active' : ''}"}
+    %a{:href => "/"} Home
+  %li{ class: "#{ action_name == 'protect' ? 'uk-active' : ''}"}
+    %a{:href => "/protect"} Protect
+  %li{ class: "#{ action_name == 'limit' ? 'uk-active' : ''}"}
+    %a{:href => "/limit"} Limit
+  %li{ class: "#{ action_name == 'teach' ? 'uk-active' : ''}"}
+    %a{:href => "/teach"} Teach
+  %li{ class: "#{ action_name == 'reward' ? 'uk-active' : ''}"}
+    %a{:href => "/reward"} Reward
+  %li
+    %a{:href => "http://blog.kudoso.com"} Blog
+  -#%li{ class: "#{ controller_name == 'devise' ? 'uk-active' : ''}"}
+  -#  -if user_signed_in? || member_signed_in?
+  -#    - if user_signed_in?
+  -#      = link_to("Logout (#{current_user.try(:member).try(:first_name) || 'user'})", destroy_user_session_path, :method => :delete)
+  -#    - if member_signed_in?
+  -#      = link_to("Logout (#{current_member.try(:member).try(:first_name) || 'member'})", destroy_member_session_path, :method => :delete)
+  -#  -else
+  -#    = link_to("Log in", new_user_session_path)
+%a.uk-visible-small{"data-uk-modal" => "", :href => "#modal"}
+  %i.k-menu-icon.uk-icon-navicon.uk-icon-small

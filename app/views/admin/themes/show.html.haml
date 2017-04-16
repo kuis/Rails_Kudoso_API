@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @theme.name
+%p
+  %b JSON:
+  = @theme.json
+
+= link_to 'Edit', edit_admin_theme_path(@theme)
+\|
+= link_to 'Back', admin_themes_path

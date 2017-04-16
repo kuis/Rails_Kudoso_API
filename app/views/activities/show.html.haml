@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b Member:
+  = @activity.member_id
+%p
+  %b Created by:
+  = @activity.created_by
+%p
+  %b Activity_template:
+  = "(#{@activity.activity_template_id}) #{@activity.activity_template.name}"
+%p
+  %b Start time:
+  = @activity.start_time
+%p
+  %b End time:
+  = @activity.end_time
+%p
+  %b Device:
+  = @activity.device_id
+%p
+  %b Content:
+  = @activity.content_id
+%p
+  %b Allowed time:
+  = @activity.allowed_time
+%p
+  %b Cost:
+  = @activity.cost
+%p
+  %b Reward:
+  = @activity.reward
+
+= link_to 'Edit', edit_family_member_activity_path(@family, @member, @activity)
+\|
+= link_to 'Back', family_member_activities_path(@family, @member)

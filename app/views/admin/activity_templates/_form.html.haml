@@ -1,0 +1,19 @@
+= simple_form_for [:admin, @activity_template] do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :description
+    = f.input :activity_type_id,  collection: ActivityType.all
+    = f.input :rec_min_age
+    = f.input :rec_max_age
+    %fieldset
+      %legend Kudos
+      = f.input :cost
+      = f.input :reward
+      = f.input :time_block
+      = f.hint 'Enter the time (in MINUTES) associated with the COST or REWARD Kudos'
+    = f.input :restricted
+    = f.hint 'A Restricted activity template means that a child cannot do the activity until their required Tasks are complete.'
+  .form-actions
+    = f.button :submit

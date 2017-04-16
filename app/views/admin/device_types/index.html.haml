@@ -1,0 +1,27 @@
+%h1 Listing device_types
+
+%table.uk-table.uk-table-striped
+  %tr
+    %th Name
+    %th Description
+    %th Os
+    %th Version
+    %th
+    %th
+    %th
+
+  - @device_types.each do |device_type|
+    %tr
+      %td
+        = image_tag device_type.icon.url(:original) if device_type.icon.present?
+        = device_type.name
+      %td= device_type.description
+      %td= device_type.os
+      %td= device_type.version
+      %td= link_to 'Show', admin_device_type_path(device_type)
+      %td= link_to 'Edit', edit_admin_device_type_path(device_type)
+      %td= link_to 'Destroy', [:admin, device_type], :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Device type', new_admin_device_type_path

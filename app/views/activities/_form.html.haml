@@ -1,0 +1,40 @@
+= form_for @activity do |f|
+  - if @activity.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@activity.errors.count, "error")} prohibited this activity from being saved:"
+      %ul
+        - @activity.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :member_id
+    = f.number_field :member_id
+  .field
+    = f.label :created_by
+    = f.number_field :created_by
+  .field
+    = f.label :activity_template_id
+    = f.number_field :activity_template_id
+  .field
+    = f.label :start_time
+    = f.datetime_select :start_time
+  .field
+    = f.label :end_time
+    = f.datetime_select :end_time
+  .field
+    = f.label :device_id
+    = f.number_field :device_id
+  .field
+    = f.label :content_id
+    = f.number_field :content_id
+  .field
+    = f.label :allowed_time
+    = f.number_field :allowed_time
+  .field
+    = f.label :cost
+    = f.number_field :cost
+  .field
+    = f.label :reward
+    = f.number_field :reward
+  .actions
+    = f.submit 'Save'

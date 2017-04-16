@@ -1,0 +1,9 @@
+= simple_form_for([:admin, @theme]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :json
+
+  .form-actions
+    = f.button :submit

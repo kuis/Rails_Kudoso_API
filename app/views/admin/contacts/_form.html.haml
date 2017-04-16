@@ -1,0 +1,45 @@
+= simple_form_for [:admin, @contact] do |f|
+  - if @contact.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@contact.errors.count, "error")} prohibited this contact from being saved:"
+      %ul
+        - @contact.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.input :first_name
+  .field
+    = f.input :last_name
+  .field
+    = f.input :company
+  .field
+    = f.input :address1
+  .field
+    = f.input :address2
+  .field
+    = f.input :city
+  .field
+    = f.input :state
+  .field
+    = f.input :zip
+  .field
+    = f.association :address_type
+  .field
+    = f.input :phone
+  .field
+    = f.association :phone_type
+  .panel
+    %b Emails
+    = f.simple_fields_for :emails do |email|
+      = render 'email_fields', :f => email
+    .links
+      = link_to_add_association 'add email', f, :emails
+  .field
+    = f.input :do_not_call, as: :boolean
+  .field
+    = f.input :do_not_email, as: :boolean
+  .field
+    = f.association :contact_type
+
+  .actions
+    = f.submit 'Save'

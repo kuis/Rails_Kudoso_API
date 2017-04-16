@@ -1,0 +1,41 @@
+.simple-wrap
+  .simple-wrap
+    %ul.nav.nav-tabs
+      -if @contact_type
+        %li{role: 'presentation'}
+          = link_to 'All', admin_contacts_path
+      - else
+        %li.active{role: 'presentation'}
+          %a{href: '#'} All
+      - @contact_types.each do |ct|
+        - if ct.id == @contact_type
+          %li.active{role: 'presentation'}
+            %a{href: '#'} #{ct.name}
+        -else
+          %li{role: 'presentation'}
+            = link_to ct.name, admin_contacts_path(contact_type_id: ct.id)
+  %table.uk-table.uk-table-striped
+    %tr
+      %th First name
+      %th Last name
+      %th Company
+      %th Primary email
+      %th Contact type
+      %th
+      %th
+      %th
+
+    - @contacts.each do |contact|
+      %tr
+        %td= contact.first_name
+        %td= contact.last_name
+        %td= contact.company
+        %td= contact.primary_email
+        %td= contact.contact_type.try(:name)
+        %td= link_to 'Show', [:admin, contact]
+        %td= link_to 'Edit', edit_admin_contact_path(contact)
+        %td= link_to 'Destroy', [:admin, contact], :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+  %br
+
+  = link_to 'New Contact', new_admin_contact_path, class: 'uk-button uk-button-success'

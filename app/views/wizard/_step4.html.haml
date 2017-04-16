@@ -1,0 +1,79 @@
+.row
+  .col-md-4.col-md-offset-1
+    %h3 Assign Tasks:
+.row
+  .col-md-8.col-md-offset-1
+    Tasks are parent directed daily activities that you assign to your kids.  We have currated this simple list of
+    age appropriate chores to get you started, you can assign them as Tasks to each child with a single click below.
+    You can customize your assigned Tasks for each child after the setup wizard is complete.
+.row
+  .col-md-10-col-md-offset-1
+    - current_user.family.kids.each do |kid|
+      .row
+        .col-md-11.col-md-offset-1
+          %hr
+      .row
+        .col-md-3.col-md-offset-1
+          = "#{kid.first_name} (age: #{kid.age})"
+          %br
+          %small
+            Assigned tasks:
+            %div{id: "child_#{kid.id}_tasks"}
+              - kid.todo_schedules.each do |ts|
+                #{ts.todo_template.name}
+                %br
+        .col-md-8
+          .manual_tasks{ id: "manual_tasks_#{kid.id}"}
+            %h3 Select tasks:
+            - TodoTemplate.find_each do |todo|
+              - unless kid.todo_templates.include?(todo)
+                - checked = (todo.def_min_age .. todo.def_max_age).include?(kid.age)
+                %input{ name: "manual_tasks_#{kid.id}", value: todo.id, type: :checkbox, checked: checked }
+                #{todo.name}
+                %br
+            %button.btn.btn-default{ onclick: "assign_tasks(#{kid.id});"}
+              Assign to #{kid.first_name}
+
+:javascript
+  function assign_tasks(kidId) {
+    $('#manual_tasks_' + kidId ).slideUp();
+    var tasks_array = $('#manual_tasks_' + kidId + ' input').serializeArray();
+    var tasks_hash = { todo_template_ids : [] }
+    jQuery.each( tasks_array, function( i, field) {
+       tasks_hash.todo_template_ids.push(field.value);
+    });
+    $.ajax({
+      url: "/families/#{ current_user.family_id }/members/" + kidId + "/todo_templates/assign",
+      dataType: 'json',
+      method: 'POST',
+      data: tasks_hash,
+      success: function(e) {
+        console.log(e);
+        jQuery.each(e, function(i, task){
+           $("#child_" + kidId + "_tasks").append(task.name + "<br/>");
+        });
+      },
+      error: function() {
+        alert('error');
+        $('#manual_tasks_' + kidId ).slideDown();
+      }
+    });
+  }
+  function save_info(args) {
+    $.ajax({
+      url: '/wizard',
+      dataType: 'json',
+      method: 'PUT',
+      data: {
+        step: 4
+      },
+      success: function() {
+        args && args.success && args.success();
+      },
+      error: function(e) {
+        alert("Sorry, there was an error saving your information.");
+      }
+
+    });
+
+  }

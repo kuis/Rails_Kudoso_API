@@ -1,0 +1,3 @@
+%h1 Add a new Family Member
+= render 'form'
+= link_to 'Back', @member.family.present? ? @member.family : families_path, class: 'btn btn-default btn-sm'

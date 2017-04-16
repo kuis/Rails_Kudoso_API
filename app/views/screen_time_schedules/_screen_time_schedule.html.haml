@@ -1,0 +1,112 @@
+%h2 Screen Time Restricted Schedule
+Click on the day to create a restriction, drag to set start/stop times.
+%table.uk-table.uk-table-striped.st_restrictions
+  %tr
+    %th Sunday
+    %th Monday
+    %th Tuesday
+    %th Wednesday
+    %th Thursday
+    %th Friday
+    %th Saturday
+  %tr
+    %td
+      #sunday.rangeSelector
+    %td
+      #monday.rangeSelector
+    %td
+      #tuesday.rangeSelector
+    %td
+      #wednesday.rangeSelector
+    %td
+      #thursday.rangeSelector
+    %td
+      #friday.rangeSelector
+    %td
+      #saturday.rangeSelector
+  %tr
+    %td{colspan: 7, onclick: 'updateScreenTimeRestrictions();'}
+      Update Time Restrictions
+:javascript
+  function updateScreenTimeRestrictions() {
+    var restrictions = { "0": [], "1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": [] };
+    $('.rangeSelector').each(function(){
+
+       switch (this.id) {
+        case "sunday":
+          restrictions["0"] =  $(this).data('timeBlocks');
+          break;
+        case "monday":
+          restrictions["1"] =  $(this).data('timeBlocks');
+          break;
+        case "tuesday":
+          restrictions["2"] =  $(this).data('timeBlocks');
+          break;
+        case "wednesday":
+          restrictions["3"] =  $(this).data('timeBlocks');
+          break;
+        case "thursday":
+          restrictions["4"] =  $(this).data('timeBlocks');
+          break;
+        case "friday":
+          restrictions["5"] =  $(this).data('timeBlocks');
+          break;
+        case "saturday":
+          restrictions["6"] =  $(this).data('timeBlocks');
+          break;
+        default:
+          console.log(this.id);
+       }
+
+    });
+    console.log(restrictions);
+    $.ajax({
+      url: "#{ family_member_screen_time_schedule_url(screen_time_schedule.member.family, screen_time_schedule.member, screen_time_schedule) }",
+      dataType: "json",
+      data: { screen_time_schedule: { restrictions: JSON.stringify(restrictions) } },
+      method: "PUT",
+      success: function(){
+        alert("success");
+      },
+      error: function(){
+        alert("error");
+      }
+
+    })
+  }
+  function setupRangeSelector() {
+    $('.rangeSelector').each(function(){
+      switch (this.id) {
+        case "sunday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( { times: #{ screen_time_schedule.restrictions["0"].as_json } });
+          break;
+        case "monday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( {times: #{ screen_time_schedule.restrictions["1"].as_json } });
+          break;
+        case "tuesday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( {times: #{ screen_time_schedule.restrictions["2"].as_json } });
+          break;
+        case "wednesday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( {timeBlocks: #{ screen_time_schedule.restrictions["3"].as_json } });
+          break;
+        case "thursday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( {times: #{ screen_time_schedule.restrictions["4"].as_json } });
+          break;
+        case "friday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( {times: #{ screen_time_schedule.restrictions["5"].as_json } });
+          break;
+        case "saturday":
+          console.log('Setting up ' + this.id);
+          $(this).rangeSelector( {times: #{ screen_time_schedule.restrictions["6"].as_json } });
+          break;
+        default:
+          console.log('Unknown: ' + this.id);
+      }
+    });
+  }

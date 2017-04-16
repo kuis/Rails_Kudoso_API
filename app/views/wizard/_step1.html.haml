@@ -1,0 +1,44 @@
+
+.row
+  .col-md-4.col-md-offset-1
+    %h3 Default Protection:
+.row
+  .col-xs-10.col-xs-offset-1
+    Content Filtering Level:
+    = select_tag 'default_filter', options_for_select(['Strict', 'Moderate', 'Mature', 'Monitor'], "#{current_user.family.default_filter.titleize}")
+.row
+  .col-xs-10.col-xs-offset-1
+    Screen Time per Day
+    = select_tag 'default_time', options_for_select(['1/2 Hour', '1 Hour', '1.5 Hours', '2 Hours'], "#{@default_time}")
+.row
+  .col-xs-10.col-xs-offset-1
+    Time Zone
+    = select_tag 'time_zone', time_zone_options_for_select( current_user.family.try(:timezone) || "Mountain Time (US & Canada)",  ActiveSupport::TimeZone.us_zones )
+
+:javascript
+  function save_info(args) {
+    var computedTime = 0;
+    if ( $('#default_time').val() == '1/2 Hour') { computedTime = 30*60; }
+    if ( $('#default_time').val() == '1 Hour') { computedTime = 60*60; }
+    if ( $('#default_time').val() == '1.5 Hours') { computedTime = 90*60; }
+    if ( $('#default_time').val() == '2 Hours') { computedTime = 120*60; }
+    $.ajax({
+      url: '/wizard',
+      dataType: 'json',
+      method: 'PUT',
+      data: {
+        step: 1,
+        default_filter: $('#default_filter').val(),
+        default_time: computedTime,
+        time_zone: $('#time_zone').val()
+      },
+      success: function() {
+        args && args.success && args.success();
+      },
+      error: function(e) {
+        alert("Sorry, there was an error saving your information.");
+      }
+
+    });
+
+  }
